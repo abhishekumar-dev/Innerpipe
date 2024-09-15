@@ -1,5 +1,6 @@
 package com.example.innerpipe.di
 
+import com.example.innerpipe.ui.player.PlayerViewModel
 import com.example.innerpipe.ui.search.SearchViewModel
 import com.example.innertube.Innertube
 import org.koin.core.module.dsl.viewModelOf
@@ -10,4 +11,5 @@ val appModule = module {
         Innertube()
     }
     viewModelOf(::SearchViewModel)
+    viewModelOf(::PlayerViewModel)
 }

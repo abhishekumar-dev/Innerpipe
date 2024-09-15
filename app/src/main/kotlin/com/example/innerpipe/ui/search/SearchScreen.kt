@@ -51,6 +51,8 @@ import androidx.compose.ui.semantics.isTraversalGroup
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.traversalIndex
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.innerpipe.Screen
 import com.example.innerpipe.ui.components.ChannelItem
 import com.example.innerpipe.ui.components.LoadingAnimation
 import com.example.innerpipe.ui.components.VideoItem
@@ -61,7 +63,8 @@ import com.example.innertube.model.renderers.VideoRenderer
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    searchViewModel: SearchViewModel
+    searchViewModel: SearchViewModel,
+    navController: NavController
 ) {
     val uiState by searchViewModel.uiState.collectAsStateWithLifecycle()
     var query by rememberSaveable { mutableStateOf("") }
@@ -157,7 +160,7 @@ fun SearchScreen(
             }
 
             uiState.items.isNotEmpty() -> {
-                ItemList(uiState, searchViewModel::nextPage)
+                ItemList(uiState, navController, searchViewModel::nextPage)
             }
         }
     }
@@ -166,6 +169,7 @@ fun SearchScreen(
 @Composable
 fun ItemList(
     uiState: SearchUiState,
+    navController: NavController,
     nextPage: () -> Unit
 ) {
     val statusBarPadding = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
@@ -191,7 +195,10 @@ fun ItemList(
         ) { _, item ->
             when (item) {
                 is ChannelRenderer -> ChannelItem(item)
-                is VideoRenderer -> VideoItem(item)
+                is VideoRenderer -> VideoItem(item) {
+                    navController.navigate(Screen.Player(item.videoId))
+                }
+
                 is Shelf -> if (item.title?.contains("Latest posts from") == false) {
                     Column {
                         item.title?.let { title ->
@@ -202,7 +209,9 @@ fun ItemList(
                             )
                         }
                         item.videos.forEach { item ->
-                            VideoItem(item)
+                            VideoItem(item) {
+                                navController.navigate(Screen.Player(item.videoId))
+                            }
                         }
                         HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
                     }
