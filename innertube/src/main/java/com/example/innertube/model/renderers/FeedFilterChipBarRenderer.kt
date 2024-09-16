@@ -4,6 +4,6 @@ import com.example.innertube.model.common.Content
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PageHeaderRenderer(
-    val content: Content
+data class FeedFilterChipBarRenderer(
+    val contents: List<Content>
 )

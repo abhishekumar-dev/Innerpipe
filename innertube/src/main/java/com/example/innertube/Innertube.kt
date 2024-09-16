@@ -1,8 +1,10 @@
 package com.example.innertube
 
 import com.example.innertube.encoder.brotli
+import com.example.innertube.model.Channel
 import com.example.innertube.model.Player
 import com.example.innertube.model.Search
+import com.example.innertube.model.body.BrowseBody
 import com.example.innertube.model.body.Client
 import com.example.innertube.model.body.Context
 import com.example.innertube.model.body.PlayerBody
@@ -82,5 +84,17 @@ class Innertube {
                 parameters.append("q", query)
             }
         }.bodyAsText().toListOfSuggestions()
+    }
+
+    suspend fun channel(id: String? = null, token: String? = null): Channel {
+        return yt(
+            path = "browse",
+            body = BrowseBody(
+                context = Context(Client.WEB),
+                browseId = id,
+                continuation = token,
+                params = "EgZ2aWRlb3PyBgQKAjoA"
+            )
+        ).body()
     }
 }

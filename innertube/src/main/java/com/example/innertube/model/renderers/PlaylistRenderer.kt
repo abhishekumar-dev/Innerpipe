@@ -20,7 +20,7 @@ data class PlaylistRenderer(
 ) {
     val title: String
         get() = _title.text
-    val isVerified = ownerBadges?.any { it.metadataBadgeRenderer.tooltip == "Verified" } ?: false
+    val isVerified = ownerBadges?.any { it.metadataBadgeRenderer.tooltip == "Verified" } == true
     val publishedTime = publishedTimeText?.text
     val author = longBylineText.first
     val browseId = viewPlaylistText.browseId

@@ -9,12 +9,7 @@ data class ContinuationItemRenderer(
     @Serializable
     data class ContinuationEndpoint(
         val continuationCommand: ContinuationCommand?
-    ) {
-        @Serializable
-        data class ContinuationCommand(
-            val token: String
-        )
-    }
+    )
 
     val token = continuationEndpoint?.continuationCommand?.token
 }

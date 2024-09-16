@@ -20,5 +20,5 @@ data class ChannelRenderer(
         get() = _title.text
     val subscribers = videoCountText?.text.orEmpty()
     val handle = subscriberCountText?.text ?: "handle missing"
-    val isVerified = ownerBadges?.any { it.metadataBadgeRenderer.tooltip == "Verified" } ?: false
+    val isVerified = ownerBadges?.any { it.metadataBadgeRenderer.tooltip == "Verified" } == true
 }
