@@ -1,5 +1,6 @@
 package com.example.innerpipe.di
 
+import com.example.innerpipe.ui.channel.ChannelViewModel
 import com.example.innerpipe.ui.player.PlayerViewModel
 import com.example.innerpipe.ui.search.SearchViewModel
 import com.example.innertube.Innertube
@@ -12,4 +13,5 @@ val appModule = module {
     }
     viewModelOf(::SearchViewModel)
     viewModelOf(::PlayerViewModel)
+    viewModelOf(::ChannelViewModel)
 }

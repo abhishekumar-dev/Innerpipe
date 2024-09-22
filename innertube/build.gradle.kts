@@ -14,5 +14,6 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.client.encoding)
     implementation(libs.brotli)
+    implementation(libs.kotlinx.datetime)
     testImplementation(libs.junit)
 }

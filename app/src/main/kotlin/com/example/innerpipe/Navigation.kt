@@ -5,6 +5,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.innerpipe.ui.channel.ChannelScreen
+import com.example.innerpipe.ui.channel.ChannelViewModel
 import com.example.innerpipe.ui.player.PlayerScreen
 import com.example.innerpipe.ui.player.PlayerViewModel
 import com.example.innerpipe.ui.search.SearchScreen
@@ -18,6 +20,9 @@ object Screen {
 
     @Serializable
     data class Player(val id: String)
+
+    @Serializable
+    data class Channel(val id: String)
 }
 
 @Composable
@@ -32,6 +37,11 @@ fun Navigation() {
             val player = backStackEntry.toRoute<Screen.Player>()
             val playerViewModel = koinViewModel<PlayerViewModel>()
             PlayerScreen(player.id, playerViewModel)
+        }
+        composable<Screen.Channel> { backStackEntry ->
+            val channel = backStackEntry.toRoute<Screen.Channel>()
+            val channelViewModel = koinViewModel<ChannelViewModel>()
+            ChannelScreen(channel.id, channelViewModel)
         }
     }
 }

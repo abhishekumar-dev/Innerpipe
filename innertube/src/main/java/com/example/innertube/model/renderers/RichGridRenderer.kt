@@ -7,5 +7,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RichGridRenderer(
     val contents: List<Content>,
-    val header: HeaderForFeedFilter
+    val header: HeaderForFeedFilter?
 )

@@ -194,7 +194,9 @@ fun ItemList(
             }
         ) { _, item ->
             when (item) {
-                is ChannelRenderer -> ChannelItem(item)
+                is ChannelRenderer -> ChannelItem(item) {
+                    navController.navigate(Screen.Channel(item.channelId))
+                }
                 is VideoRenderer -> VideoItem(item) {
                     navController.navigate(Screen.Player(item.videoId))
                 }

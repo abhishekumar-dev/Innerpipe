@@ -17,7 +17,7 @@ data class Header(
     ) {
         @Serializable
         data class PageHeaderViewModel(
-            val banner: Banner,
+            val banner: Banner?,
             val metadata: Metadata
         ) {
             @Serializable

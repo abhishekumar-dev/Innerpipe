@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -25,17 +26,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.innerpipe.R
+import com.example.innerpipe.ui.components.separateByDots
 import com.example.innertube.model.renderers.ChannelRenderer
 import com.example.innertube.model.renderers.VideoRenderer
 
 @Composable
 fun ChannelItem(channel: ChannelRenderer, onClick: () -> Unit = {}) {
     Row(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(
@@ -85,7 +90,9 @@ fun ChannelItem(channel: ChannelRenderer, onClick: () -> Unit = {}) {
 @Composable
 fun VideoItem(video: VideoRenderer, onClick: () -> Unit = {}) {
     Column(
-        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Box {
@@ -154,6 +161,58 @@ fun VideoItem(video: VideoRenderer, onClick: () -> Unit = {}) {
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
+    }
+}
+
+@Composable
+fun VideoItemMini(video: VideoRenderer, onClick: () -> Unit = {}) {
+    Row(
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
+    ) {
+        Box {
+            AsyncImage(
+                model = video.thumbnail.url,
+                contentDescription = null,
+                modifier = Modifier
+                    .width(140.dp)
+                    .clip(RoundedCornerShape(10.dp))
+                    .background(
+                        color = MaterialTheme.colorScheme.onBackground.copy(0.1F),
+                        shape = RoundedCornerShape(10.dp)
+                    ),
+                contentScale = ContentScale.FillWidth
+            )
+            val color = if (video.duration == "LIVE") Color.Red else Color.Black
+            Text(
+                text = video.duration,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(5.dp)
+                    .background(color = color.copy(0.8f), shape = RoundedCornerShape(4.dp))
+                    .padding(4.dp, 1.dp),
+                color = Color.White,
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
+            )
+        }
+        Column(
+            verticalArrangement = Arrangement.spacedBy(2.dp)
+        ) {
+            Text(text = video.title, maxLines = 2, overflow = TextOverflow.Ellipsis)
+            val metadata = listOfNotNull(
+                video.views,
+                video.publishedTime,
+                video.upcomingEvent
+            )
+            Text(
+                text = metadata.separateByDots(),
+                color = MaterialTheme.colorScheme.onBackground.copy(0.9f),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
     }
 }
 

@@ -7,17 +7,17 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 ktor = "3.0.0-beta-2"
-lifecycleRuntimeKtx = "2.8.5"
+lifecycleRuntimeKtx = "2.8.6"
 activityCompose = "1.9.2"
-composeBom = "2024.09.01"
+composeBom = "2024.09.02"
 coilCompose = "2.7.0"
-navigationCompose = "2.8.0"
+navigationCompose = "2.8.1"
 media3 = "1.4.1"
-lottieCompose = "6.4.1"
-lifecycleRuntimeCompose = "2.8.5"
-kotlinxSerializationJson = "1.7.1"
-koin-bom = "4.0.0-RC2"
-datastore = "1.1.1"
+lottieCompose = "6.5.2"
+lifecycleRuntimeCompose = "2.8.6"
+kotlinxSerializationJson = "1.7.3"
+koin-bom = "4.0.0"
+kotlinxDatetime = "0.6.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,7 +51,7 @@ kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-
 koin-bom = { module = "io.insert-koin:koin-bom", version.ref = "koin-bom" }
 koin-core = { module = "io.insert-koin:koin-core" }
 koin-android = { module = "io.insert-koin:koin-androidx-compose" }
-androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

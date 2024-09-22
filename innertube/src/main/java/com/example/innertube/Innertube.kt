@@ -26,6 +26,9 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import java.awt.Toolkit
+import java.awt.datatransfer.Clipboard
+import java.awt.datatransfer.StringSelection
 
 @OptIn(ExperimentalSerializationApi::class)
 class Innertube {

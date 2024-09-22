@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class TabRenderer(
     val title: String,
-    val content: Content?
+    val content: Content?,
+    val selected: Boolean?
 )

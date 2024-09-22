@@ -10,20 +10,20 @@ data class Channel(
     val onResponseReceivedActions: List<OnResponseReceivedActions>?,
     val metadata: Metadata?
 ) {
-    private val content = contents?.twoColumnBrowseResultsRenderer?.tabs?.get(1)?.tabRenderer?.content?.richGridRenderer?.contents
+    private val content = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(1)?.tabRenderer?.content?.richGridRenderer?.contents
         ?: onResponseReceivedActions?.lastOrNull()?.reloadContinuationItemsCommand?.continuationItems
         ?: onResponseReceivedActions?.firstOrNull()?.appendContinuationItemsAction?.continuationItems
-    val videos = content?.mapNotNull { it.richItemRenderer?.content?.videoRenderer }
+    val videos = content?.mapNotNull { it.richItemRenderer?.content?.videoRenderer }.orEmpty()
     val token = content?.lastOrNull()?.continuationItemRenderer?.token
 
-    private val filterContent = contents?.twoColumnBrowseResultsRenderer?.tabs?.get(1)?.tabRenderer?.content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
+    private val filterContent = contents?.twoColumnBrowseResultsRenderer?.tabs?.getOrNull(1)?.tabRenderer?.content?.richGridRenderer?.header?.feedFilterChipBarRenderer?.contents
         ?: onResponseReceivedActions?.firstOrNull()?.reloadContinuationItemsCommand?.continuationItems?.firstOrNull()?.feedFilterChipBarRenderer?.contents
-    val filters = filterContent?.map {
+    val filters = filterContent?.mapNotNull {
         Filter(
             title = it.chipCloudChipRenderer?.text?.text,
             token = it.chipCloudChipRenderer?.navigationEndpoint?.continuationCommand?.token
         )
-    }
+    }.orEmpty()
 
     private val pageHeaderViewModel = header?.pageHeaderRenderer?.content?.pageHeaderViewModel
     val banner = pageHeaderViewModel?.banner?.imageBannerViewModel?.image?.sources?.firstOrNull()?.url
