@@ -1,21 +1,17 @@
 # Innerpipe
 YouTube client for Android
 
-# Features
-- Ad free
-- Return YouTube Dislikes
-- Picture in Picture
-- Dark mode
-- Access to Premium bitrate
+## Features
+- 🚫 Ad free
+- 👎 Return YouTube Dislikes
+- 📼 Picture in Picture
+- ⬛ Dark mode
+- 🔓 Access to Premium bitrate
 
-# Not supported
-- Playlist
-- Shorts
-- Comment replies
+https://github.com/user-attachments/assets/53ab5b70-9dcb-4028-bbec-479fbfaf941b
 
-# TODO
-- [ ] Cleanup UI
-- [ ] Optimize Nav graphs
-- [ ] remove code
-- [x] Comments
-- [x] Dark mode
+
+## 🚀 Roadmap
+- [ ] Improve user interface design
+- [ ] Fix known bugs and improve stability
+- [ ] Implement additional features
