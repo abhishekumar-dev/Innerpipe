@@ -2,11 +2,15 @@ package com.example.innertube
 
 import com.example.innertube.encoder.brotli
 import com.example.innertube.model.Channel
+import com.example.innertube.model.Comments
 import com.example.innertube.model.Player
+import com.example.innertube.model.PlayerMetadata
+import com.example.innertube.model.RYD
 import com.example.innertube.model.Search
 import com.example.innertube.model.body.BrowseBody
 import com.example.innertube.model.body.Client
 import com.example.innertube.model.body.Context
+import com.example.innertube.model.body.NextBody
 import com.example.innertube.model.body.PlayerBody
 import com.example.innertube.model.body.SearchBody
 import io.ktor.client.HttpClient
@@ -16,6 +20,7 @@ import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
@@ -99,5 +104,25 @@ class Innertube {
                 params = "EgZ2aWRlb3PyBgQKAjoA"
             )
         ).body()
+    }
+
+    suspend fun playerMetadata(id: String): PlayerMetadata {
+        return yt(
+            path = "next",
+            body = NextBody(context = Context(Client.WEB), videoId = id)
+        ).body()
+    }
+
+    suspend fun comments(token: String): Comments {
+        return yt(
+            path = "next",
+            body = NextBody(context = Context(Client.WEB), videoId = null, continuation = token)
+        ).body()
+    }
+
+    suspend fun returnYoutubeDislike(id: String): RYD {
+        return httpClient.get("https://returnyoutubedislikeapi.com/votes") {
+            parameter("videoId", id)
+        }.body()
     }
 }

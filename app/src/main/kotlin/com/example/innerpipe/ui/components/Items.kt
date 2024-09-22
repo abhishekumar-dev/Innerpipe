@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.innerpipe.R
-import com.example.innerpipe.ui.components.separateByDots
 import com.example.innertube.model.renderers.ChannelRenderer
 import com.example.innertube.model.renderers.VideoRenderer
 
