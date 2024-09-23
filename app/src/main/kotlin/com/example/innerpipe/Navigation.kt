@@ -36,12 +36,12 @@ fun Navigation() {
         composable<Screen.Player> { backStackEntry ->
             val player = backStackEntry.toRoute<Screen.Player>()
             val playerViewModel = koinViewModel<PlayerViewModel>()
-            PlayerScreen(player.id, playerViewModel)
+            PlayerScreen(player.id, playerViewModel, navController)
         }
         composable<Screen.Channel> { backStackEntry ->
             val channel = backStackEntry.toRoute<Screen.Channel>()
             val channelViewModel = koinViewModel<ChannelViewModel>()
-            ChannelScreen(channel.id, channelViewModel)
+            ChannelScreen(channel.id, navController, channelViewModel)
         }
     }
 }

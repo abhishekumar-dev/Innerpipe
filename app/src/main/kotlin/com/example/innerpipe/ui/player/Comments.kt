@@ -3,6 +3,7 @@ package com.example.innerpipe.ui.player
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -28,7 +29,7 @@ fun Comments(
         modifier = Modifier.fillMaxSize()
     ) {
         Text(
-            text = "Description",
+            text = "Comments",
             style = MaterialTheme.typography.titleLarge,
             modifier = Modifier.padding(16.dp, 0.dp, 16.dp, 16.dp)
         )
@@ -49,7 +50,9 @@ fun Comments(
 
 @Composable
 private fun Comment(comment: Comment, onRepliesClick: (String) -> Unit = {}) {
-    Row {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(10.dp)
+    ) {
         AsyncImage(
             model = comment.thumbnail,
             contentDescription = null,

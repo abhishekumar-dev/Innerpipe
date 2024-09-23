@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
@@ -56,11 +57,15 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.innerpipe.R
+import com.example.innerpipe.Screen
 import com.example.innerpipe.share
 import com.example.innerpipe.toHumanReadableCount
+import com.example.innerpipe.ui.components.LinkifyText
 import com.example.innerpipe.ui.components.LoadingAnimation
+import com.example.innerpipe.ui.components.VideoItemMini
 import com.example.innerpipe.ui.components.VideoPlayer
 import com.example.innertube.model.PlayerMetadata
 import com.example.innertube.model.RYD
@@ -70,7 +75,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlayerScreen(
     id: String,
-    playerViewModel: PlayerViewModel
+    playerViewModel: PlayerViewModel,
+    navController: NavController
 ) {
     val coroutineScope = rememberCoroutineScope()
     val uiState by playerViewModel.uiState.collectAsStateWithLifecycle()
@@ -78,6 +84,14 @@ fun PlayerScreen(
 
     LaunchedEffect(Unit) {
         playerViewModel.player(id)
+    }
+    BackHandler {
+        navController.navigate(Screen.Search) {
+            popUpTo(Screen.Search) {
+                inclusive = false
+            }
+            launchSingleTop = true
+        }
     }
     when {
         uiState.isLoading -> {
@@ -122,6 +136,7 @@ fun PlayerScreen(
                             0 -> {
                                 Description(player?.videoDetails?.shortDescription.orEmpty())
                             }
+
                             1 -> {
                                 Comments(
                                     uiState = uiState,
@@ -131,29 +146,47 @@ fun PlayerScreen(
                         }
                     }
                 ) { scaffoldState ->
-                    Column {
-                        if (metadata != null) {
-                            Metadata(metadata) {
-                                coroutineScope.launch {
-                                    type = 0
-                                    scaffoldState.bottomSheetState.expand()
-                                }
-                            }
-                        }
-                        if (returnYoutubeDislike != null) {
-                            Actions(returnYoutubeDislike)
-                        }
-                        if (metadata != null && metadata.commentCount > 0 && metadata.tokenForComments != null) {
-                            Button(
-                                onClick = {
+                    LazyColumn {
+                        item {
+                            if (metadata != null) {
+                                Metadata(
+                                    metadata = metadata,
+                                    channelOnClick = {
+                                        player?.videoDetails?.channelId?.let {
+                                            navController.navigate(Screen.Channel(it)) {
+                                                launchSingleTop = true
+                                            }
+                                        }
+                                    }
+                                ) {
                                     coroutineScope.launch {
-                                        playerViewModel.comments(metadata.tokenForComments!!)
-                                        type = 1
+                                        type = 0
                                         scaffoldState.bottomSheetState.expand()
                                     }
                                 }
-                            ) {
-                                Text(text = "Comments ${metadata.commentCount}")
+                            }
+                            if (returnYoutubeDislike != null) {
+                                Actions(returnYoutubeDislike)
+                            }
+                            if (metadata != null && metadata.commentCount > 0 && metadata.tokenForComments != null) {
+                                Button(
+                                    onClick = {
+                                        coroutineScope.launch {
+                                            playerViewModel.comments(metadata.tokenForComments!!)
+                                            type = 1
+                                            scaffoldState.bottomSheetState.expand()
+                                        }
+                                    }
+                                ) {
+                                    Text(text = "Comments ${metadata.commentCount}")
+                                }
+                            }
+                        }
+                        items(metadata?.recommendedVideos.orEmpty()) {
+                            VideoItemMini(it) {
+                                navController.navigate(Screen.Player(it.videoId)) {
+                                    launchSingleTop = true
+                                }
                             }
                         }
                     }
@@ -195,6 +228,7 @@ private fun WithBottomSheet(
 @Composable
 private fun Metadata(
     metadata: PlayerMetadata,
+    channelOnClick: () -> Unit = {},
     onClick: () -> Unit = {}
 ) {
     Column(
@@ -229,7 +263,11 @@ private fun Metadata(
             modifier = Modifier.clickable(onClick = onClick)
         )
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    channelOnClick()
+                },
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -277,7 +315,7 @@ private fun Description(description: String) {
         HorizontalDivider()
         LazyColumn {
             item {
-                Text(
+                LinkifyText(
                     text = description,
                     modifier = Modifier.padding(10.dp)
                 )

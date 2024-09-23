@@ -14,10 +14,10 @@ class ChannelViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ChannelUiState())
     val uiState = _uiState.asStateFlow()
-    private var token: String? = null
+    private var continuationToken: String? = null
 
     fun channel(id: String) {
-        token = null
+        continuationToken = null
         _uiState.update {
             it.copy(
                 isLoading = true,
@@ -34,17 +34,17 @@ class ChannelViewModel(
                         filters = channel.filters,
                         header = Header(
                             title = channel.title.orEmpty(),
-                            description = channel.description.orEmpty(),
+                            description = channel.description,
                             avatar = channel.avatar.orEmpty(),
                             banner = channel.banner.orEmpty(),
-                            handle = channel.handle.orEmpty(),
-                            subscribers = channel.subscribers.orEmpty(),
-                            videosCount = channel.videosCount.orEmpty()
+                            handle = channel.handle,
+                            subscribers = channel.subscribers,
+                            videosCount = channel.videosCount
                         ),
                         isLoading = false
                     )
                 }
-                token = channel.token
+                continuationToken = channel.token
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message, isLoading = false)
@@ -64,7 +64,7 @@ class ChannelViewModel(
                         isLoading = false
                     )
                 }
-                this@ChannelViewModel.token = channel.token
+                continuationToken = channel.token
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message, isLoading = false)
@@ -74,5 +74,5 @@ class ChannelViewModel(
     }
 
     fun filter(token: String) = continuation(token, true)
-    fun nextPage() = continuation(token, false)
+    fun nextPage() = continuation(continuationToken, false)
 }

@@ -25,7 +25,7 @@ data class PlayerMetadata(
 
     private val secondaryResults =
         contents.twoColumnWatchNextResults?.secondaryResults?.secondaryResults?.results
-    val recommendedVideos = secondaryResults?.mapNotNull { it.compactVideoRenderer }
+    val recommendedVideos = secondaryResults?.mapNotNull { it.compactVideoRenderer }.orEmpty()
     val tokenForRecommendedVideos = secondaryResults?.lastOrNull()?.continuationItemRenderer?.token
 
     private val commentsEntryPoint =

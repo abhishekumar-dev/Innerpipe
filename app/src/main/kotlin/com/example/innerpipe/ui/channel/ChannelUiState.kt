@@ -5,12 +5,12 @@ import com.example.innertube.model.renderers.VideoRenderer
 
 data class Header(
     val title: String,
-    val description: String,
+    val description: String?,
     val avatar: String,
     val banner: String,
-    val handle: String,
-    val subscribers: String,
-    val videosCount: String
+    val handle: String?,
+    val subscribers: String?,
+    val videosCount: String?
 )
 
 data class ChannelUiState(
